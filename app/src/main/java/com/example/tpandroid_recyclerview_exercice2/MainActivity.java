@@ -39,16 +39,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         viewModelProvider = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-
         // RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         customAdapter = new CustomAdapter(viewModelProvider.getPersonsList().getValue());
         recyclerView.setAdapter(customAdapter);
 
-
-
         // ViewModel
-        //qzdzqviewModelProvider.getPersonsList().observe(this, value -> MainActivityViewModel.setPersonsList(value));
+        viewModelProvider.getPersonsList().observe(this, value -> customAdapter.notifyItemInserted(value.size() - 1));
     }
 
     public void addButtonOnClick(View view) {
@@ -57,8 +54,5 @@ public class MainActivity extends AppCompatActivity {
         Person person = new Person(firstname, lastname);
         DAOPerson.addPerson(person);
         MainActivityViewModel.setPersonsList(DAOPerson.getPersons());
-
-        String string = DAOPerson.getPersons().toString();
-        Log.d("test23", string);
     }
 }
